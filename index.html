@@ -1,1 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grok's Memory</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 10px;
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+        #title {
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        #toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #3355ff;
+            color: #ffffff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #toggle.dark-mode {
+            background-color: #55aaff;
+        }
+        #inputBox {
+            width: 80%;
+            margin: 20px auto;
+            height: 100px;
+            resize: none;
+            font-size: 1.1em;
+            padding: 10px;
+            border: 1px solid #aaa;
+            display: block;
+            background-color: #ffffff;
+            color: #000000;
+        }
+        body.dark-mode #inputBox {
+            background-color: #333333;
+            color: #ffffff;
+            border-color: #555555;
+        }
+        label {
+            display: block;
+            text-align: center;
+            margin: 10px 0;
+            color: #444444;
+        }
+        body.dark-mode label {
+            color: #cccccc;
+        }
+        #loadButton {
+            background-color: #3355ff;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            display: block;
+            margin: 10px auto;
+            border-radius: 5px;
+        }
+        body.dark-mode #loadButton {
+            background-color: #55aaff;
+        }
+        #outputBox {
+            width: 80%;
+            margin: 20px auto;
+            height: 200px;
+            overflow-y: auto;
+            border: 1px solid #aaa;
+            padding: 10px;
+            background-color: #f9f9f9;
+            color: #000000;
+        }
+        body.dark-mode #outputBox {
+            background-color: #333333;
+            color: #ffffff;
+            border-color: #555555;
+        }
+    </style>
+</head>
+<body>
+    <button id="toggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div id="title">Grok's Memory</div>
+    <textarea id="inputBox" placeholder="Paste chat logs here"></textarea>
+    <label for="outputBox">Chat Log History</label>
+    <button id="loadButton" onclick="loadText()">Paste & Load</button>
+    <div id="outputBox"></div>
 
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const toggleButton = document.getElementById('toggle');
+            toggleButton.textContent = document.body.classList.contains('dark-mode') ? 'Light Mode' : 'Dark Mode';
+        }
+
+        function loadText() {
+            const inputBox = document.getElementById('inputBox');
+            const outputBox = document.getElementById('outputBox');
+            const text = inputBox.value.trim();
+            if (text) {
+                const timestamp = new Date().toLocaleString('en-US', { 
+                    month: 'long', 
+                    day: 'numeric', 
+                    hour: 'numeric', 
+                    minute: 'numeric', 
+                    hour12: true, 
+                    timeZoneName: 'short' 
+                });
+                const newEntry = `<p><strong>Loaded: ${timestamp}</strong><br>${text}</p><hr>`;
+                outputBox.innerHTML = newEntry + outputBox.innerHTML;
+                inputBox.value = ''; // Keep text box clear after loading
+            }
+        }
+
+        // Load dark mode by default
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('dark-mode');
+            document.getElementById('toggle').textContent = 'Light Mode';
+        });
+    </script>
+</body>
+</html>
